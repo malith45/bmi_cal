@@ -3,29 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'reusable_icon_label.dart';
 import 'reusable_card.dart';
+import 'constants.dart';
 
-const bottomContainerHeight = 80.0;
-const Color activeContainerColor = Color(0xff1d1e33);
-const Color inactiveContainerColor = Color(0xff111328);
+var selectedGender;
 
 class InputPageState extends State<InputPage> {
-  Color maleCardColor = inactiveContainerColor;
-  Color femaleCardColor = inactiveContainerColor;
+  Color maleCardColor = kInactiveContainerColor;
+  Color femaleCardColor = kInactiveContainerColor;
 
-  void updateColor(int gender) {
-    if (gender == 1) {
-      maleCardColor = activeContainerColor;
-      femaleCardColor = inactiveContainerColor;
-    } else {
-      maleCardColor = inactiveContainerColor;
-    }
-    if (gender == 2) {
-      femaleCardColor = activeContainerColor;
-      maleCardColor = inactiveContainerColor;
-    } else {
-      femaleCardColor = inactiveContainerColor;
-    }
-  }
+  int height = 180;
+  int weight = 60;
+  int age = 18;
 
   @override
   Widget build(BuildContext context) {
@@ -37,37 +25,38 @@ class InputPageState extends State<InputPage> {
                     style: TextStyle(color: Colors.white)))),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: ReusableCard(
+                      onPress: () {
                         setState(() {
-                          updateColor(1);
+                          selectedGender = Gender.male;
                         });
                       },
-                      child: ReusableCard(
-                        col: maleCardColor,
-                        cardChild: ReusableIconLabel(
-                            label: 'Male', iconW: FontAwesomeIcons.mars),
-                      ),
+                      col: selectedGender == Gender.male
+                          ? kActiveContainerColor
+                          : kInactiveContainerColor,
+                      cardChild: ReusableIconLabel(
+                          label: 'Male', iconW: FontAwesomeIcons.mars),
                     ),
                   ),
                   Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: ReusableCard(
+                      onPress: () {
                         setState(() {
-                          updateColor(2);
+                          selectedGender = Gender.female;
                         });
                       },
-                      child: ReusableCard(
-                        col: femaleCardColor,
-                        cardChild: ReusableIconLabel(
-                            label: 'Female', iconW: FontAwesomeIcons.venus),
-                      ),
+                      col: selectedGender == Gender.female
+                          ? kActiveContainerColor
+                          : kInactiveContainerColor,
+                      cardChild: ReusableIconLabel(
+                          label: 'Female', iconW: FontAwesomeIcons.venus),
                     ),
                   )
                 ],
@@ -75,24 +64,135 @@ class InputPageState extends State<InputPage> {
             ),
             Expanded(
               child: ReusableCard(
-                col: activeContainerColor,
-                cardChild: Container(),
+                col: kActiveContainerColor,
+                cardChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'HEIGHT',
+                      style: kLabelStyle,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(height.toString(), style: kNumberStyle),
+                        Text(
+                          'CM',
+                          style: kLabelStyle,
+                        ),
+                      ],
+                    ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                          inactiveTrackColor: Color(0xff8d8e98),
+                          activeTrackColor: Colors.white,
+                          thumbColor: Color(0xffeb1555),
+                          overlayColor: Color(0x29eb1555),
+                          thumbShape:
+                              RoundSliderThumbShape(enabledThumbRadius: 15),
+                          overlayShape:
+                              RoundSliderOverlayShape(overlayRadius: 25)),
+                      child: Slider(
+                        value: height.toDouble(),
+                        min: 90.0,
+                        max: 220.0,
+                        onChanged: (double newHeight) {
+                          setState(() {
+                            height = newHeight.round();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                onPress: () {},
               ),
             ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
                     child: ReusableCard(
-                      col: activeContainerColor,
-                      cardChild: Container(),
+                      col: kActiveContainerColor,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'WEIGHT',
+                            style: kLabelStyle,
+                          ),
+                          Text(
+                            weight.toString(),
+                            style: kNumberStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: () {
+                                  setState(() {
+                                    weight--;
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 18),
+                              RoundIconButton(
+                                  icon: FontAwesomeIcons.plus,
+                                  onPressed: () {
+                                    setState(() {
+                                      weight++;
+                                    });
+                                  }),
+                            ],
+                          )
+                        ],
+                      ),
+                      onPress: () {},
                     ),
                   ),
                   Expanded(
                     child: ReusableCard(
-                      col: activeContainerColor,
-                      cardChild: Container(),
+                      col: kActiveContainerColor,
+                      cardChild: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'AGE',
+                            style: kLabelStyle,
+                          ),
+                          Text(
+                            age.toString(),
+                            style: kNumberStyle,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 18),
+                              RoundIconButton(
+                                  icon: FontAwesomeIcons.plus,
+                                  onPressed: () {
+                                    setState(() {
+                                      age++;
+                                    });
+                                  }),
+                            ],
+                          )
+                        ],
+                      ),
+                      onPress: () {},
                     ),
                   ),
                 ],
@@ -102,9 +202,31 @@ class InputPageState extends State<InputPage> {
               color: Color(0xffeb1555),
               margin: EdgeInsets.only(top: 10),
               width: double.infinity,
-              height: bottomContainerHeight,
+              height: kBottomContainerHeight,
             )
           ],
         ));
+  }
+}
+
+enum Gender { male, female }
+
+class RoundIconButton extends StatelessWidget {
+  RoundIconButton({super.key, required this.icon, required this.onPressed});
+  final IconData icon;
+  final onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(icon),
+      shape: CircleBorder(),
+      fillColor: Color(0xff16325B),
+      elevation: 6.0,
+      constraints: BoxConstraints.tightFor(
+        width: 56,
+        height: 56,
+      ),
+      onPressed: onPressed,
+    );
   }
 }
