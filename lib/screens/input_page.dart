@@ -1,9 +1,12 @@
-import 'main.dart';
+import 'results_page.dart';
+import '../components/bottom_button.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'reusable_icon_label.dart';
-import 'reusable_card.dart';
-import 'constants.dart';
+import '../components/reusable_icon_label.dart';
+import '../components/reusable_card.dart';
+import '../constants.dart';
+import '../components/round_icon_button.dart';
 
 var selectedGender;
 
@@ -198,11 +201,18 @@ class InputPageState extends State<InputPage> {
                 ],
               ),
             ),
-            Container(
-              color: Color(0xffeb1555),
-              margin: EdgeInsets.only(top: 10),
-              width: double.infinity,
-              height: kBottomContainerHeight,
+            BottomButton(
+              btnText: 'CALCULATE',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ResultsPage();
+                    },
+                  ),
+                );
+              },
             )
           ],
         ));
@@ -210,23 +220,3 @@ class InputPageState extends State<InputPage> {
 }
 
 enum Gender { male, female }
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({super.key, required this.icon, required this.onPressed});
-  final IconData icon;
-  final onPressed;
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(icon),
-      shape: CircleBorder(),
-      fillColor: Color(0xff16325B),
-      elevation: 6.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56,
-        height: 56,
-      ),
-      onPressed: onPressed,
-    );
-  }
-}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class ReusableIconLabel extends StatelessWidget {
   ReusableIconLabel({super.key, required this.label, required this.iconW});
