@@ -1,5 +1,4 @@
 import 'package:bmi_cal/constants.dart';
-import 'package:bmi_cal/main.dart';
 import 'package:bmi_cal/components/reusable_card.dart';
 import 'package:flutter/material.dart';
 import '../components/bottom_button.dart';
